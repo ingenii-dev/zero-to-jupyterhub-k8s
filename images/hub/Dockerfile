@@ -64,6 +64,8 @@ RUN --mount=type=cache,target=${PIP_CACHE_DIR} \
     pip install \
         --find-links=/tmp/wheels/ \
         -r /tmp/requirements.txt
+COPY jupyterhub_kubespawner-4.2.1.dev0-py3-none-any.whl /tmp/jupyterhub_kubespawner-4.2.1.dev0-py3-none-any.whl
+RUN pip install /tmp/jupyterhub_kubespawner-4.2.1.dev0-py3-none-any.whl
 
 WORKDIR /srv/jupyterhub
 RUN chown ${NB_USER}:${NB_USER} /srv/jupyterhub
