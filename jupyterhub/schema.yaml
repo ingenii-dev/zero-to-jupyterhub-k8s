@@ -2287,6 +2287,13 @@ properties:
                 description: |
                   Configures `KubeSpawner.volume_name_template`, which is the
                   name to reference from the containers volumeMounts section.
+          extraDynamicVolumes:
+            type: object
+            additionalProperties: false
+            description: |
+              Configures `KubeSpawner.extra_storage_config`. Specifies any extra
+              dynamic volumes that will be created for the user, and mounted as
+              subfolders of the home folder.
           extraLabels:
             type: object
             additionalProperties: false

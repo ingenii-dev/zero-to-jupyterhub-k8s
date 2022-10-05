@@ -262,18 +262,35 @@ if storage_type == "dynamic":
         c.KubeSpawner, "storage_capacity", "singleuser.storage.capacity"
     )
 
+    extra_dynamic_volumes = get_config("singleuser.storage.extraDynamicVolumes") or {}
+
+    c.KubeSpawner.extra_storage = extra_dynamic_volumes
+
     # Add volumes to singleuser pods
     c.KubeSpawner.volumes = [
         {
             "name": volume_name_template,
             "persistentVolumeClaim": {"claimName": pvc_name_template},
         }
+    ] + [
+        {
+            "name": f"{volume_name_template}-{name}",
+            "persistentVolumeClaim": {"claimName": f"{pvc_name_template}-{name}"},
+        }
+        for name in extra_dynamic_volumes
     ]
+    home_mount_path = get_config("singleuser.storage.homeMountPath")
     c.KubeSpawner.volume_mounts = [
         {
-            "mountPath": get_config("singleuser.storage.homeMountPath"),
+            "mountPath": home_mount_path,
             "name": volume_name_template,
         }
+    ] + [
+        {
+            "mountPath": f"{home_mount_path}/{name}",
+            "name": f"{volume_name_template}-{name}",
+        }
+        for name in extra_dynamic_volumes
     ]
 elif storage_type == "static":
     pvc_claim_name = get_config("singleuser.storage.static.pvcName")

@@ -382,6 +382,7 @@ singleuser:
       pvcNameTemplate: claim-{username}{servername}
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
+    extraDynamicVolumes: {}
   image:
     name: jupyterhub/k8s-singleuser-sample
     tag: "set-by-chartpress"
